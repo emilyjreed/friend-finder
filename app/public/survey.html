@@ -181,7 +181,7 @@
                             </div>
 
 
-                            <a data-target="modal1" class="waves-effect waves-light btn-large blue" id="submit">Submit</a>
+                            <a data-target="modal1" class="waves-effect waves-light btn-large blue modal-trigger" id="submit">Submit</a>
 
                         </form>
                     </div>
@@ -220,47 +220,32 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('select').formSelect();
+        $('.modal').modal();
 
         $('#submit').on("click", function (event) {
             event.preventDefault();
+            
+            var inputData = {
+                name: $('#name').val(),
+                photo: $('#photo').val(),
+                scores: [
+                    $('#q1').val(),
+                    $('#q2').val(),
+                    $('#q3').val(),
+                    $('#q4').val(),
+                    $('#q5').val(),
+                    $('#q6').val(),
+                    $('#q7').val(),
+                    $('#q8').val(),
+                    $('#q9').val(),
+                    $('#q10').val()
+                ]
+            };
 
-            function validateForm() {
-                var valid = true;
-                $('.input-field').each(function () {
-                    if ($(this).val() === '') {
-                        valid = false;
-                    }
-                });
-                return valid;
-            }
-
-            if (validateForm() === true) {
-                $('.modal').modal();
-
-                var inputData = {
-                    name: $('#name').val(),
-                    photo: $('#photo').val(),
-                    scores: [
-                        $('#q1').val(),
-                        $('#q2').val(),
-                        $('#q3').val(),
-                        $('#q4').val(),
-                        $('#q5').val(),
-                        $('#q6').val(),
-                        $('#q7').val(),
-                        $('#q8').val(),
-                        $('#q9').val(),
-                        $('#q10').val()
-                    ]
-                };
-
-                $.post("/api/friends", inputData, function (data) {
-                    $('#matchName').text(data.name);
-                    $('#matchPhoto').attr("src", data.photo);
-                });
-            } else {
-                alert("Please fill out all fields before submitting!")
-            }
+            $.post("/api/friends", inputData, function (data) {
+                $('#matchName').text(data.name);
+                $('#matchPhoto').attr("src", data.photo);
+            });
         })
     });
 
