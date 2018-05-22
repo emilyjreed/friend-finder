@@ -208,8 +208,9 @@
     <!-- Modal Structure -->
     <div id="modal1" class="modal">
         <div class="modal-content">
-            <h4>Your Match</h4>
-            <p></p>
+            <h4 class="text-center">Your Match</h4>
+            <h5 class="text-center" id="matchName"></h5>
+            <img id="matchPhoto"></img>
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
@@ -247,7 +248,8 @@
             };
 
             $.post("/api/friends", inputData, function (data) {
-                console.log(data);
+                $('#matchName').text(data.name);
+                $('#matchPhoto').attr("src", data.photo);
             });
         })
     });
