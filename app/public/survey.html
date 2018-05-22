@@ -11,12 +11,6 @@
     <!-- Materialize icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <style>
-        .input-field .prefix.active {
-            color: black;
-        }
-    </style>
-
 </head>
 
 <body>
@@ -187,7 +181,7 @@
                             </div>
 
 
-                            <a data-target="modal1" class="waves-effect waves-light btn-large blue modal-trigger" id="submit">Submit</a>
+                            <a data-target="modal1" class="waves-effect waves-light btn-large blue" id="submit">Submit</a>
 
                         </form>
                     </div>
@@ -205,12 +199,11 @@
         </div>
     </footer>
 
-    <!-- Modal Structure -->
     <div id="modal1" class="modal">
         <div class="modal-content">
-            <h4 class="text-center">Your Match</h4>
-            <h5 class="text-center" id="matchName"></h5>
-            <img id="matchPhoto"></img>
+            <h4 class="center-align">Your Match</h4>
+            <h5 class="center-align" id="matchName"></h5>
+            <img class="center-align" id="matchPhoto" height="50%" width="50%"></img>
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
@@ -230,27 +223,45 @@
         $('.modal').modal();
 
         $('#submit').on("click", function (event) {
-            var inputData = {
-                name: $('#name').val(),
-                photo: $('#photo').val(),
-                scores: [
-                    $('#q1').val(),
-                    $('#q2').val(),
-                    $('#q3').val(),
-                    $('#q4').val(),
-                    $('#q5').val(),
-                    $('#q6').val(),
-                    $('#q7').val(),
-                    $('#q8').val(),
-                    $('#q9').val(),
-                    $('#q10').val()
-                ]
-            };
+            event.preventDefault();
 
-            $.post("/api/friends", inputData, function (data) {
-                $('#matchName').text(data.name);
-                $('#matchPhoto').attr("src", data.photo);
-            });
+            function validateForm() {
+                var valid = true;
+                $('.input-field').each(function () {
+                    if ($(this).val() === '') {
+                        valid = false;
+                    }
+                });
+                return valid;
+            }
+
+            if (validateForm() === true) {
+
+                var inputData = {
+                    name: $('#name').val(),
+                    photo: $('#photo').val(),
+                    scores: [
+                        $('#q1').val(),
+                        $('#q2').val(),
+                        $('#q3').val(),
+                        $('#q4').val(),
+                        $('#q5').val(),
+                        $('#q6').val(),
+                        $('#q7').val(),
+                        $('#q8').val(),
+                        $('#q9').val(),
+                        $('#q10').val()
+                    ]
+                };
+
+                $.post("/api/friends", inputData, function (data) {
+                    $('#matchName').text(data.name);
+                    $('#matchPhoto').attr("src", data.photo);
+                    $('#modal1').modal("toggle");
+                });
+            } else {
+                alert("Please fill out all fields before submitting!")
+            }
         })
     });
 
