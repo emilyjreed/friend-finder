@@ -220,7 +220,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('select').formSelect();
-        $('.modal').modal();
 
         $('#submit').on("click", function (event) {
             event.preventDefault();
@@ -236,6 +235,7 @@
             }
 
             if (validateForm() === true) {
+                $('.modal').modal();
 
                 var inputData = {
                     name: $('#name').val(),
@@ -257,7 +257,6 @@
                 $.post("/api/friends", inputData, function (data) {
                     $('#matchName').text(data.name);
                     $('#matchPhoto').attr("src", data.photo);
-                    $('#modal1').modal("toggle");
                 });
             } else {
                 alert("Please fill out all fields before submitting!")
